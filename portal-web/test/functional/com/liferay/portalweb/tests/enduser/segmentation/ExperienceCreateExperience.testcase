@@ -4556,10 +4556,9 @@ definition {
 	@ignore = "true"
 	@priority = "4"
 	test RequiredField {
-
 		PageEditor.addExperienceWithoutSegment(experienceName = "");
 
-		task("Check if the warning message appears"){
+		task ("Check if the warning message appears") {
 			AssertTextEquals(
 				locator1 = "Message#WARNING_FEEDBACK",
 				value1 = "An experience name is required.");
