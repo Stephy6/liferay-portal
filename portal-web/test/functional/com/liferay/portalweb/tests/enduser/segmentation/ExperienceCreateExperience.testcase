@@ -4557,8 +4557,13 @@ definition {
 	@priority = "4"
 	test RequiredField {
 
-		// TODO LPS-91946 RequiredField pending implementation
+		PageEditor.addExperienceWithoutSegment(experienceName = "");
 
+		task("Check if the warning message appears"){
+			AssertTextEquals(
+				locator1 = "Message#WARNING_FEEDBACK",
+				value1 = "An experience name is required.");
+		}
 	}
 
 }
