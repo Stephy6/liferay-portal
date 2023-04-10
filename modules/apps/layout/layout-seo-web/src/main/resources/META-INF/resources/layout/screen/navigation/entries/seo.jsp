@@ -194,10 +194,12 @@ UnicodeProperties layoutTypeSettingsUnicodeProperties = selLayout.getTypeSetting
 			</c:choose>
 
 			<aui:input name="robots" placeholder="robots" />
+		</clay:sheet-section>
 
-			<c:if test="<%= PortalUtil.isLayoutSitemapable(selLayout) %>">
-				<hr class="mb-4 separator" />
+		<c:if test="<%= PortalUtil.isLayoutSitemapable(selLayout) %>">
+			<hr class="mb-5 separator" />
 
+			<clay:sheet-section>
 				<h3 class="mb-4 text-uppercase"><liferay-ui:message key="sitemap" /></h3>
 
 				<div class="alert alert-warning layout-prototype-info-message <%= selLayout.isLayoutPrototypeLinkActive() ? StringPool.BLANK : "hide" %>">
@@ -231,8 +233,8 @@ UnicodeProperties layoutTypeSettingsUnicodeProperties = selLayout.getTypeSetting
 					<aui:option label="yearly" />
 					<aui:option label="never" />
 				</aui:select>
-			</c:if>
-		</clay:sheet-section>
+			</clay:sheet-section>
+		</c:if>
 
 		<clay:sheet-footer>
 			<clay:button
