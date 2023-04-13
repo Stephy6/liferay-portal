@@ -14,8 +14,8 @@
 
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
-import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import * as PropTypes from 'prop-types';
+import React from 'react';
 import {DragSource as dragSource} from 'react-dnd';
 
 import {PROPERTY_TYPES} from '../../utils/constants';
@@ -32,12 +32,40 @@ const TYPE_ICON_MAP = {
 	[PROPERTY_TYPES.STRING]: 'text',
 };
 
-/**
- * Passes the required values to the drop target.
- * This method must be called `beginDrag`.
- * @param {Object} props Component's current props
- * @returns {Object} The props to be passed to the drop target.
- */
+function CriteriaSidebarItem({
+	className,
+	connectDragSource,
+	dragging,
+	label,
+	type,
+}) {
+
+	/**
+	 * Passes the required values to the drop target.
+	 * This method must be called `beginDrag`.
+	 * @param {Object} props Component's current props
+	 * @returns {Object} The props to be passed to the drop target.
+	 */
+
+	const classes = getCN('criteria-sidebar-item-root', {dragging}, className);
+
+	return connectDragSource(
+		<li className={classes} tabIndex="0">
+			<span className="inline-item">
+				<ClayIcon symbol="drag" />
+			</span>
+
+			<span className="criteria-sidebar-item-type sticker sticker-dark">
+				<span className="inline-item">
+					<ClayIcon symbol={TYPE_ICON_MAP[type] || 'text'} />
+				</span>
+			</span>
+
+			{label}
+		</li>
+	);
+}
+
 function beginDrag({defaultValue, name, propertyKey, type}) {
 	return {
 		criterion: {
@@ -47,51 +75,6 @@ function beginDrag({defaultValue, name, propertyKey, type}) {
 		},
 		propertyKey,
 	};
-}
-
-class CriteriaSidebarItem extends Component {
-	static propTypes = {
-		className: PropTypes.string,
-		connectDragSource: PropTypes.func,
-		defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		dragging: PropTypes.bool,
-		label: PropTypes.string,
-		name: PropTypes.string,
-		propertyKey: PropTypes.string.isRequired,
-		type: PropTypes.string,
-	};
-
-	render() {
-		const {
-			className,
-			connectDragSource,
-			dragging,
-			label,
-			type,
-		} = this.props;
-
-		const classes = getCN(
-			'criteria-sidebar-item-root',
-			{dragging},
-			className
-		);
-
-		return connectDragSource(
-			<li className={classes} tabIndex="0">
-				<span className="inline-item">
-					<ClayIcon symbol="drag" />
-				</span>
-
-				<span className="criteria-sidebar-item-type sticker sticker-dark">
-					<span className="inline-item">
-						<ClayIcon symbol={TYPE_ICON_MAP[type] || 'text'} />
-					</span>
-				</span>
-
-				{label}
-			</li>
-		);
-	}
 }
 
 export default dragSource(
@@ -104,3 +87,14 @@ export default dragSource(
 		dragging: monitor.isDragging(),
 	})
 )(CriteriaSidebarItem);
+
+CriteriaSidebarItem.propTypes = {
+	className: PropTypes.string,
+	connectDragSource: PropTypes.func,
+	defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	dragging: PropTypes.bool,
+	label: PropTypes.string,
+	name: PropTypes.string,
+	propertyKey: PropTypes.string.isRequired,
+	type: PropTypes.string,
+};
