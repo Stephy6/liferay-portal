@@ -11,6 +11,8 @@ import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {useModal} from '@clayui/modal';
+import {PageTemplateModal} from '@liferay/layout-js-components-web';
 import classNames from 'classnames';
 import {fetch, sub} from 'frontend-js-web';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
@@ -166,8 +168,10 @@ const MillerColumnsItem = ({
 		bulkActions = [],
 		checked,
 		columnIndex,
+		createLayoutPageTemplateEntryURL,
 		description,
 		draggable,
+		getLayoutPageTemplateCollectionsURL,
 		hasChild,
 		hasDuplicatedFriendlyURL = false,
 		id: itemId,
@@ -191,6 +195,16 @@ const MillerColumnsItem = ({
 }) => {
 	const ref = useRef();
 	const timeoutRef = useRef();
+
+	const onClose = () => {
+		setOpenModal(false);
+	};
+
+	const [openModal, setOpenModal] = useState(false);
+
+	const {observer} = useModal({
+		onClose,
+	});
 
 	const [dropZone, setDropZone] = useState();
 
@@ -235,6 +249,10 @@ const MillerColumnsItem = ({
 							...item,
 							onClick(event) {
 								const action = item.data?.action;
+
+								if (action === 'convertToPageTemplate') {
+									setOpenModal(true);
+								}
 
 								if (action) {
 									event.preventDefault();
@@ -551,6 +569,21 @@ const MillerColumnsItem = ({
 					<span aria-live="polite" className="sr-only">
 						{loadMessage}
 					</span>
+
+					{openModal && (
+						<PageTemplateModal
+							createLayoutPageTemplateEntryURL={
+								createLayoutPageTemplateEntryURL
+							}
+							getLayoutPageTemplateCollectionsURL={
+								getLayoutPageTemplateCollectionsURL
+							}
+							layoutId={itemId}
+							namespace={namespace}
+							observer={observer}
+							onClose={onClose}
+						/>
+					)}
 				</ClayLayout.ContentCol>
 			)}
 
