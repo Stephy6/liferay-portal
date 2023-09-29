@@ -5,8 +5,8 @@
 
 import ClayForm from '@clayui/form';
 import {Container} from '@clayui/layout';
-import ClayLink from '@clayui/link';
 import classNames from 'classnames';
+import {LearnMessage, LearnResourcesContext} from 'frontend-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {FormEvent, useEffect, useRef, useState} from 'react';
 
@@ -21,15 +21,18 @@ interface Props {
 	portletNamespace: string;
 }
 
+interface PROPS_2 {
+	getCompletionURL: string;
+	learnResources: object;
+	portletNamespace: string;
+}
+
 type RequestStatus =
 	| {type: 'idle'}
 	| {type: 'loading'}
 	| {errorMessage: string; type: 'error'};
 
-export default function AICreatorModal({
-	getCompletionURL,
-	portletNamespace,
-}: Props) {
+function AICreatorModal({getCompletionURL, portletNamespace}: Props) {
 	const closeModal = () => {
 		const opener = Liferay.Util.getOpener();
 
@@ -131,14 +134,10 @@ export default function AICreatorModal({
 						) : null}
 
 						<ClayForm.Group className="c-mb-0">
-							<ClayLink
-								href="https://learn.liferay.com/w/dxp/content-authoring-and-management/web-content/web-content-articles/generating-text-content-using-ai"
-								target="_blank"
-							>
-								{Liferay.Language.get(
-									'learn-more-about-openai-integration'
-								)}
-							</ClayLink>
+							<LearnMessage
+								resource="ai-creator-openai-web"
+								resourceKey="general"
+							/>
 						</ClayForm.Group>
 					</Container>
 
@@ -154,5 +153,20 @@ export default function AICreatorModal({
 				</fieldset>
 			</ClayForm>
 		</div>
+	);
+}
+
+export default function ({
+	getCompletionURL,
+	learnResources,
+	portletNamespace,
+}: PROPS_2) {
+	return (
+		<LearnResourcesContext.Provider value={learnResources}>
+			<AICreatorModal
+				getCompletionURL={getCompletionURL}
+				portletNamespace={portletNamespace}
+			/>
+		</LearnResourcesContext.Provider>
 	);
 }

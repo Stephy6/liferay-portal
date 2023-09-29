@@ -5,12 +5,14 @@
 
 /// <reference types="react" />
 
-interface Props {
+interface PROPS_2 {
 	getCompletionURL: string;
+	learnResources: object;
 	portletNamespace: string;
 }
-export default function AICreatorModal({
+export default function ({
 	getCompletionURL,
+	learnResources,
 	portletNamespace,
-}: Props): JSX.Element;
+}: PROPS_2): JSX.Element;
 export {};
