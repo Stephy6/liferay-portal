@@ -3,7 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {render} from '@liferay/frontend-js-react-web';
 import {getWindow, openWindow} from 'frontend-js-web';
+
+import FormModal from './components/FormModal';
 
 export default function ({
 	namespace: portletNamespace,
@@ -118,7 +121,10 @@ export default function ({
 
 		const previousActiveElement = document.getElementById('main-content');
 
-		showPopup(form, 400, previousActiveElement, icon.text);
+		render(FormModal, {title: icon.text}, document.createElement('div'));
+
+		// showPopup(form, 400, previousActiveElement, icon.text);
+
 	};
 
 	for (let i = 0; i < workflowTasks.length; i++) {
